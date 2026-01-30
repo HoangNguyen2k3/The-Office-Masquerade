@@ -1,0 +1,35 @@
+{
+    "version": 1,
+    "name": "PlayerInputAction",
+    "maps": [
+        {
+            "name": "Player",
+            "id": "8c6b5c18-3704-470a-8b56-b9c6a503a4c1",
+            "actions": [
+                {
+                    "name": "Swap",
+                    "type": "Button",
+                    "id": "0cf12390-f17b-4164-8990-426e8b94db53",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "4a56c7a8-05cc-405a-82fe-2521006b73fd",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Swap",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
