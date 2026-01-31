@@ -36,7 +36,8 @@ public class PlayerController : MonoBehaviour {
 
     [Header("Cutscene Control")]
     public bool canMove = true;  // Để cutscene có thể disable input
-
+    [Header("Audio Settings")]
+    public AudioSource runAudioSource; // Kéo AudioSource dùng cho tiếng chạy vào đây
     void Start() {
         jumpsRemaining = maxJumps;
         GameplayManager.Ins.OpenPastMap();
@@ -63,6 +64,9 @@ public class PlayerController : MonoBehaviour {
 
         // Jump Buffer Logic - ghi nhận input nhảy
         if (Input.GetKeyDown(KeyCode.Space)) {
+            if (AudioManager.Instance != null) {
+                AudioManager.Instance.PlaySFX(AudioManager.Instance.jumpSFX);
+            }
             jumpBufferCounter = jumpBufferTime;
         }
         else {
@@ -100,6 +104,9 @@ public class PlayerController : MonoBehaviour {
     }
 
     void ToggleMask() {
+        if (AudioManager.Instance != null) {
+            AudioManager.Instance.PlaySFX(AudioManager.Instance.swapMaskSFX);
+        }
         isPast = !isPast;
 
         // Hoán đổi Map
@@ -120,13 +127,29 @@ public class PlayerController : MonoBehaviour {
         anim.SetBool("isRunning", horizontalInput != 0);
         anim.SetBool("isGrounded", isGrounded);
         //        anim.SetFloat("yVelocity", rb.linearVelocity.y);
-
+        bool isMoving = horizontalInput != 0;
+        HandleRunSFX(isMoving);
         if (horizontalInput > 0) transform.localScale = new Vector3(1, 1, 1);
         else if (horizontalInput < 0) transform.localScale = new Vector3(-1, 1, 1);
 
         // Smoke effect: chỉ bật khi đang di chuyển VÀ đang trên mặt đất
         if (smoke != null) {
             smoke.SetActive(isGrounded && horizontalInput != 0);
+        }
+    }
+    void HandleRunSFX(bool isMoving) {
+        if (runAudioSource == null) return;
+
+        // Chỉ phát nhạc khi: Đang chạm đất VÀ đang di chuyển
+        if (isGrounded && isMoving) {
+            if (!runAudioSource.isPlaying) {
+                runAudioSource.Play(); // Bắt đầu phát nếu chưa phát
+            }
+        }
+        else {
+            if (runAudioSource.isPlaying) {
+                runAudioSource.Stop(); // Dừng lại nếu đang phát mà đứng yên hoặc nhảy lên
+            }
         }
     }
     private void OnDrawGizmosSelected() {

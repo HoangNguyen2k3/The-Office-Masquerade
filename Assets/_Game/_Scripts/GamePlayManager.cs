@@ -26,6 +26,9 @@ public class GameplayManager : MonoBehaviour {
     public void Lose() {
         Debug.Log("Game Over!");
         ui_Lose.SetActive(true);
+        if (AudioManager.Instance != null) {
+            AudioManager.Instance.PlaySFX(AudioManager.Instance.loseSFX);
+        }
         // Có thể thêm hiệu ứng Slow motion hoặc bảng thông báo ở đây
         //Invoke("RestartLevel", 0.5f);
 
@@ -34,6 +37,9 @@ public class GameplayManager : MonoBehaviour {
     public void Win() {
         Debug.Log("Mission Accomplished!");
         ui_Win.SetActive(true);
+        if (AudioManager.Instance != null) {
+            AudioManager.Instance.PlaySFX(AudioManager.Instance.winningSFX);
+        }
         // Chuyển sang scene tiếp theo hoặc hiện bảng thắng
     }
 
