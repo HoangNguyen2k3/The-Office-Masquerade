@@ -20,9 +20,13 @@ public class PlayerController : MonoBehaviour {
     public LayerMask groundLayer;
     private bool isGrounded;
 
+    [Header("Coyote Time & Jump Buffer")]
+    public float coyoteTime = 0.15f;      // Thời gian cho phép nhảy sau khi rời platform
+    public float jumpBufferTime = 0.15f;  // Thời gian buffer input nhảy
+    private float coyoteTimeCounter;       // Đếm ngược coyote time
+    private float jumpBufferCounter;       // Đếm ngược jump buffer
+
     [Header("Mask Swap System")]
-    public GameObject pastMap;
-    public GameObject presentMap;
     private bool isPast = true;
     // Thêm hiệu ứng hình ảnh cho mặt nạ (tùy chọn)
     public GameObject maskInPlayerPast;
@@ -30,18 +34,35 @@ public class PlayerController : MonoBehaviour {
 
     void Start() {
         jumpsRemaining = maxJumps;
+        GameplayManager.Ins.OpenPastMap();
     }
 
     void Update() {
         horizontalInput = Input.GetAxisRaw("Horizontal");
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, checkRadius, groundLayer);
+
+        // Coyote Time Logic
         if (isGrounded) {
-            jumpsRemaining = maxJumps; // Reset số lần nhảy khi chạm đất
+            coyoteTimeCounter = coyoteTime;  // Reset coyote time khi đang đứng trên mặt đất
+            jumpsRemaining = maxJumps;       // Reset số lần nhảy khi chạm đất
+        }
+        else {
+            coyoteTimeCounter -= Time.deltaTime;  // Đếm ngược khi rời khỏi mặt đất
         }
 
+        // Jump Buffer Logic - ghi nhận input nhảy
         if (Input.GetKeyDown(KeyCode.Space)) {
-            if (isGrounded || jumpsRemaining > 0) {
+            jumpBufferCounter = jumpBufferTime;
+        }
+        else {
+            jumpBufferCounter -= Time.deltaTime;
+        }
+
+        // Thực hiện nhảy nếu: có buffer input VÀ (còn coyote time HOẶC còn lần nhảy)
+        if (jumpBufferCounter > 0f) {
+            if (coyoteTimeCounter > 0f || jumpsRemaining > 0) {
                 Jump();
+                jumpBufferCounter = 0f;  // Reset buffer sau khi nhảy
             }
         }
 
@@ -61,6 +82,7 @@ public class PlayerController : MonoBehaviour {
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
 
         jumpsRemaining--;
+        coyoteTimeCounter = 0f;  // Reset coyote time sau khi nhảy để tránh exploit
 
         // Trigger hiệu ứng nhảy trong Animator (nếu có)
         //anim.SetTrigger("jumpTrigger");
@@ -70,8 +92,12 @@ public class PlayerController : MonoBehaviour {
         isPast = !isPast;
 
         // Hoán đổi Map
-        pastMap.SetActive(isPast);
-        presentMap.SetActive(!isPast);
+        if (isPast) {
+            GameplayManager.Ins.OpenPastMap();
+        }
+        else {
+            GameplayManager.Ins.OpenPresentMap();
+        }
         GameplayManager.Ins.ui_choosePast.SetActive(isPast);
         GameplayManager.Ins.ui_choosePresent.SetActive(!isPast);
         maskInPlayerPast.SetActive(isPast);

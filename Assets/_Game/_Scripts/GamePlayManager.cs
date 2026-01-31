@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Tilemaps;
 
 public class GameplayManager : MonoBehaviour {
     public static GameplayManager Ins;
@@ -7,6 +8,10 @@ public class GameplayManager : MonoBehaviour {
     public GameObject ui_choosePresent;
     public GameObject ui_Win;
     public GameObject ui_Lose;
+    public Tilemap tilemapPast;
+    public Tilemap tilemapPresent;
+    public TilemapCollider2D tileMapPast;
+    public TilemapCollider2D tileMapPresent;
     private void Awake() {
         if (Ins == null) Ins = this;
         else Destroy(gameObject);
@@ -32,5 +37,17 @@ public class GameplayManager : MonoBehaviour {
 
     public void ReturnToMainMenu() {
         SceneManager.LoadScene("Menu");
+    }
+    public void OpenPastMap() {
+        tilemapPast.color = new Color(1f, 1f, 1f, 1f);
+        tileMapPast.enabled = true;
+        tilemapPresent.color = new Color(1f, 1f, 1f, 40 / 255f);
+        tileMapPresent.enabled = false;
+    }
+    public void OpenPresentMap() {
+        tilemapPast.color = new Color(1f, 1f, 1f, 40 / 255f);
+        tileMapPast.enabled = false;
+        tilemapPresent.color = new Color(1f, 1f, 1f, 1f);
+        tileMapPresent.enabled = true;
     }
 }
