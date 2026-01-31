@@ -41,11 +41,11 @@ public class GameplayManager : MonoBehaviour {
     public void OpenPastMap() {
         tilemapPast.color = new Color(1f, 1f, 1f, 1f);
         tileMapPast.enabled = true;
-        tilemapPresent.color = new Color(1f, 1f, 1f, 40 / 255f);
+        tilemapPresent.color = new Color(1f, 1f, 1f, 20 / 255f);
         tileMapPresent.enabled = false;
     }
     public void OpenPresentMap() {
-        tilemapPast.color = new Color(1f, 1f, 1f, 40 / 255f);
+        tilemapPast.color = new Color(1f, 1f, 1f, 20 / 255f);
         tileMapPast.enabled = false;
         tilemapPresent.color = new Color(1f, 1f, 1f, 1f);
         tileMapPresent.enabled = true;

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class PlayerController : MonoBehaviour {
     [Header("Movement Settings")]
@@ -28,6 +29,7 @@ public class PlayerController : MonoBehaviour {
 
     [Header("Mask Swap System")]
     private bool isPast = true;
+    public BoxCollider2D playerCollider;  // Collider của player để check overlap
     // Thêm hiệu ứng hình ảnh cho mặt nạ (tùy chọn)
     public GameObject maskInPlayerPast;
     public GameObject maskInPresentPlayer;
@@ -89,6 +91,13 @@ public class PlayerController : MonoBehaviour {
     }
 
     void ToggleMask() {
+        // Kiểm tra xem có thể swap an toàn không
+        if (!CanSwapSafely()) {
+            Debug.Log("Không thể swap! Vị trí hiện tại bị chặn bởi tilemap.");
+            // Có thể thêm hiệu ứng visual/audio thông báo không thể swap
+            return;
+        }
+
         isPast = !isPast;
 
         // Hoán đổi Map
@@ -103,6 +112,38 @@ public class PlayerController : MonoBehaviour {
         maskInPlayerPast.SetActive(isPast);
         maskInPresentPlayer.SetActive(!isPast);
         Debug.Log("Swapped Mask! Current World: " + (isPast ? "Past" : "Present"));
+    }
+
+    /// <summary>
+    /// Kiểm tra xem player có thể swap an toàn sang map kia không
+    /// </summary>
+    bool CanSwapSafely() {
+        // Lấy tilemap sẽ được bật sau khi swap
+        TilemapCollider2D targetTilemap = isPast 
+            ? GameplayManager.Ins.tileMapPresent  // Nếu đang ở Past, sẽ swap sang Present
+            : GameplayManager.Ins.tileMapPast;    // Nếu đang ở Present, sẽ swap sang Past
+
+        if (targetTilemap == null || playerCollider == null) return true;
+
+        // Lấy bounds của player collider
+        Bounds playerBounds = playerCollider.bounds;
+        
+        // Thu nhỏ bounds một chút để tránh false positive ở mép
+        Vector2 checkSize = new Vector2(playerBounds.size.x * 0.9f, playerBounds.size.y * 0.9f);
+        Vector2 checkCenter = playerBounds.center;
+
+        // Tạm thời bật collider của tilemap đích để kiểm tra
+        bool wasEnabled = targetTilemap.enabled;
+        targetTilemap.enabled = true;
+
+        // Kiểm tra overlap với tilemap đích
+        Collider2D overlap = Physics2D.OverlapBox(checkCenter, checkSize, 0f, groundLayer);
+        
+        // Khôi phục trạng thái collider
+        targetTilemap.enabled = wasEnabled;
+
+        // Nếu có overlap với tilemap đích -> không an toàn
+        return overlap == null || overlap.gameObject != targetTilemap.gameObject;
     }
 
     void UpdateAnimations() {
