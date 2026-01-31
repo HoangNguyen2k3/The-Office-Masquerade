@@ -6,6 +6,8 @@ public class Bullet : MonoBehaviour {
             GameplayManager.Ins.Lose();
             Destroy(gameObject);
         }
-        if (other.CompareTag("Ground")) Destroy(gameObject); // Chạm tường thì biến mất
+        if (other.gameObject.layer == LayerMask.NameToLayer("Ground")) {
+            Destroy(gameObject);
+        }
     }
 }

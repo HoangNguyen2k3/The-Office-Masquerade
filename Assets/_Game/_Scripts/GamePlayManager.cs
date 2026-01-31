@@ -12,6 +12,10 @@ public class GameplayManager : MonoBehaviour {
     public Tilemap tilemapPresent;
     public TilemapCollider2D tileMapPast;
     public TilemapCollider2D tileMapPresent;
+    public GameObject trap_Future;
+    public GameObject trap_Past;
+    public GameObject enemy_Future;
+    public GameObject enemy_Past;
     private void Awake() {
         if (Ins == null) Ins = this;
         else Destroy(gameObject);
@@ -43,11 +47,19 @@ public class GameplayManager : MonoBehaviour {
         tileMapPast.enabled = true;
         tilemapPresent.color = new Color(1f, 1f, 1f, 40 / 255f);
         tileMapPresent.enabled = false;
+        trap_Future.SetActive(false);
+        enemy_Future.SetActive(false);
+        enemy_Past.SetActive(true);
+        trap_Past.SetActive(true);
     }
     public void OpenPresentMap() {
         tilemapPast.color = new Color(1f, 1f, 1f, 40 / 255f);
         tileMapPast.enabled = false;
         tilemapPresent.color = new Color(1f, 1f, 1f, 1f);
         tileMapPresent.enabled = true;
+        trap_Future.SetActive(true);
+        enemy_Future.SetActive(true);
+        enemy_Past.SetActive(false);
+        trap_Past.SetActive(false);
     }
 }

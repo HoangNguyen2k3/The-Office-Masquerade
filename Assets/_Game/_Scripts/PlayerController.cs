@@ -32,6 +32,7 @@ public class PlayerController : MonoBehaviour {
     public GameObject maskInPlayerPast;
     public GameObject maskInPresentPlayer;
 
+    public GameObject smoke;
     void Start() {
         jumpsRemaining = maxJumps;
         GameplayManager.Ins.OpenPastMap();
@@ -112,6 +113,11 @@ public class PlayerController : MonoBehaviour {
 
         if (horizontalInput > 0) transform.localScale = new Vector3(1, 1, 1);
         else if (horizontalInput < 0) transform.localScale = new Vector3(-1, 1, 1);
+
+        // Smoke effect: chỉ bật khi đang di chuyển VÀ đang trên mặt đất
+        if (smoke != null) {
+            smoke.SetActive(isGrounded && horizontalInput != 0);
+        }
     }
     private void OnDrawGizmosSelected() {
         if (groundCheck != null) {
