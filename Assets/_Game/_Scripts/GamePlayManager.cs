@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using DG.Tweening;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 
@@ -16,6 +17,7 @@ public class GameplayManager : MonoBehaviour {
     public GameObject trap_Past;
     public GameObject enemy_Future;
     public GameObject enemy_Past;
+    public CanvasGroup obj_Introduce;
     private void Awake() {
         if (Ins == null) Ins = this;
         else Destroy(gameObject);
@@ -61,5 +63,11 @@ public class GameplayManager : MonoBehaviour {
         enemy_Future.SetActive(true);
         enemy_Past.SetActive(false);
         trap_Past.SetActive(false);
+    }
+    public void OpenIntroduce() {
+        obj_Introduce?.DOKill();
+        obj_Introduce.alpha = 1f;
+        obj_Introduce.DOFade(0f, 8f).OnComplete(() => {
+        });
     }
 }

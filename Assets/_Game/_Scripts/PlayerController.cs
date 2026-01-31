@@ -33,12 +33,22 @@ public class PlayerController : MonoBehaviour {
     public GameObject maskInPresentPlayer;
 
     public GameObject smoke;
+
+    [Header("Cutscene Control")]
+    public bool canMove = true;  // Để cutscene có thể disable input
+
     void Start() {
         jumpsRemaining = maxJumps;
         GameplayManager.Ins.OpenPastMap();
     }
 
     void Update() {
+        // Không cho điều khiển khi cutscene đang chạy
+        if (!canMove) {
+            horizontalInput = 0;
+            return;
+        }
+
         horizontalInput = Input.GetAxisRaw("Horizontal");
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, checkRadius, groundLayer);
 
