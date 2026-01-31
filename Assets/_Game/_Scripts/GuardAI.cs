@@ -53,8 +53,8 @@ public class GuardAI : MonoBehaviour {
     }
 
     void Flip(float direction) {
-        if (direction > 0) transform.localScale = new Vector3(1, 1, 1);
-        else if (direction < 0) transform.localScale = new Vector3(-1, 1, 1);
+        if (direction > 0) transform.localScale = new Vector3(2, 2, 2);
+        else if (direction < 0) transform.localScale = new Vector3(-2, 2, 2);
     }
 
     void OnCollisionEnter2D(Collision2D col) {

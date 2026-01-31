@@ -25,9 +25,8 @@ public class PlayerController : MonoBehaviour {
     public GameObject presentMap;
     private bool isPast = true;
     // Thêm hiệu ứng hình ảnh cho mặt nạ (tùy chọn)
-    public SpriteRenderer characterSprite;
-    public Color pastColor = Color.white;
-    public Color presentColor = Color.cyan;
+    public GameObject maskInPlayerPast;
+    public GameObject maskInPresentPlayer;
 
     void Start() {
         jumpsRemaining = maxJumps;
@@ -75,9 +74,8 @@ public class PlayerController : MonoBehaviour {
         presentMap.SetActive(!isPast);
         GameplayManager.Ins.ui_choosePast.SetActive(isPast);
         GameplayManager.Ins.ui_choosePresent.SetActive(!isPast);
-        if (characterSprite != null) {
-            characterSprite.color = isPast ? pastColor : presentColor;
-        }
+        maskInPlayerPast.SetActive(isPast);
+        maskInPresentPlayer.SetActive(!isPast);
         Debug.Log("Swapped Mask! Current World: " + (isPast ? "Past" : "Present"));
     }
 
