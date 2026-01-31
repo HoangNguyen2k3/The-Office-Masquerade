@@ -20,7 +20,7 @@ public class DroneKamikaze : MonoBehaviour {
 
         if (dist < detectionRange && player.gameObject.activeInHierarchy)
             isCharging = true;
-        else if (Vector2.Distance(transform.position, startPos) > 10f || !player.gameObject.activeInHierarchy)
+        else if (Vector2.Distance(transform.position, startPos) > 6f || !player.gameObject.activeInHierarchy)
             isCharging = false; // Quay về nếu quá xa hoặc player swap
 
         if (isCharging)
