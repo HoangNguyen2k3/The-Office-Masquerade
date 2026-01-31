@@ -29,4 +29,8 @@ public class GameplayManager : MonoBehaviour {
     public void RestartLevel() {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+
+    public void ReturnToMainMenu() {
+        SceneManager.LoadScene("Menu");
+    }
 }
