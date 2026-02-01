@@ -876,6 +876,8 @@ MonoBehaviour:
   loseSFX: {fileID: 8300000, guid: 3ab1d19ce6f45ee4a9f05c94fbf4856c, type: 3}
   runSFX: {fileID: 8300000, guid: 9f1c70821ddf6844b932d4eb02080722, type: 3}
   jumpSFX: {fileID: 8300000, guid: a665e4d3944b877478ab35c1e6c2c4fd, type: 3}
+  musicVolume: 0.25
+  sfxVolume: 1
 --- !u!4 &479050626
 Transform:
   m_ObjectHideFlags: 0
@@ -1595,11 +1597,9 @@ MonoBehaviour:
   btnCloseSettings: {fileID: 0}
   mainMenuPanel: {fileID: 0}
   settingsPanel: {fileID: 1429300294}
-  musicVolumeSlider: {fileID: 1063213448}
-  sfxVolumeSlider: {fileID: 2055834073}
-  backgroundMusicSource: {fileID: 0}
-  sfxSource: {fileID: 0}
-  gameSceneName: SampleScene
+  musicVolumeSlider: {fileID: 2055834073}
+  sfxVolumeSlider: {fileID: 1063213448}
+  gameSceneName: GamePlay
 --- !u!4 &932325530
 Transform:
   m_ObjectHideFlags: 0

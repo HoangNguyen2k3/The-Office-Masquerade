@@ -44,6 +44,12 @@ public class IntroCutscene : MonoBehaviour {
     private bool textPhaseCompleted = false;    // Đánh dấu đã xong phase text
     public CanvasGroup canvasAllTutor;
     void Start() {
+        if (AudioManager.Instance.bool_firstTutor) {
+            treasureVCam.gameObject.SetActive(false);
+            canvasAllTutor.gameObject.SetActive(false);
+            return;
+        }
+        AudioManager.Instance.bool_firstTutor = true;
         // Disable player control khi cutscene chạy
         if (playerController != null) {
             playerController.canMove = false;

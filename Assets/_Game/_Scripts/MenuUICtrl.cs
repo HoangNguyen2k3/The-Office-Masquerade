@@ -17,17 +17,10 @@ public class MenuUICtrl : MonoBehaviour {
     public Slider musicVolumeSlider;
     public Slider sfxVolumeSlider;
 
-    [Header("Audio Sources")]
-    public AudioSource backgroundMusicSource;
-    public AudioSource sfxSource;
-
     [Header("Scene Settings")]
     public string gameSceneName = "GamePlay";
 
     void Start() {
-        /*        if (btnPlay != null)
-                    btnPlay.onClick.AddListener(OnPlayButtonClicked);*/
-
         if (btnSettings != null)
             btnSettings.onClick.AddListener(OnSettingsButtonClicked);
 
@@ -37,14 +30,20 @@ public class MenuUICtrl : MonoBehaviour {
         if (btnCloseSettings != null)
             btnCloseSettings.onClick.AddListener(OnCloseSettingsClicked);
 
+        // Setup Music Slider
         if (musicVolumeSlider != null) {
             musicVolumeSlider.onValueChanged.AddListener(OnMusicVolumeChanged);
-            musicVolumeSlider.value = PlayerPrefs.GetFloat("MusicVolume", 1f);
+            // Load giá trị từ AudioManager
+            if (AudioManager.Instance != null)
+                musicVolumeSlider.value = AudioManager.Instance.GetMusicVolume();
         }
 
+        // Setup SFX Slider  
         if (sfxVolumeSlider != null) {
             sfxVolumeSlider.onValueChanged.AddListener(OnSFXVolumeChanged);
-            sfxVolumeSlider.value = PlayerPrefs.GetFloat("SFXVolume", 1f);
+            // Load giá trị từ AudioManager
+            if (AudioManager.Instance != null)
+                sfxVolumeSlider.value = AudioManager.Instance.GetSFXVolume();
         }
 
         ShowMainMenu();
@@ -65,26 +64,22 @@ public class MenuUICtrl : MonoBehaviour {
     }
 
     public void OnMusicVolumeChanged(float value) {
-        if (backgroundMusicSource != null)
-            backgroundMusicSource.volume = value;
-
-        PlayerPrefs.SetFloat("MusicVolume", value);
-        PlayerPrefs.Save();
+        if (AudioManager.Instance != null) {
+            AudioManager.Instance.SetMusicVolume(value);
+        }
     }
 
     public void OnSFXVolumeChanged(float value) {
-        if (sfxSource != null)
-            sfxSource.volume = value;
-
-        PlayerPrefs.SetFloat("SFXVolume", value);
-        PlayerPrefs.Save();
+        if (AudioManager.Instance != null) {
+            AudioManager.Instance.SetSFXVolume(value);
+        }
     }
 
     public void OnQuitButtonClicked() {
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #else
-            Application.Quit();
+        Application.Quit();
 #endif
     }
 

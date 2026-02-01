@@ -40,6 +40,8 @@ public class PlayerController : MonoBehaviour {
     public AudioSource runAudioSource; // Kéo AudioSource dùng cho tiếng chạy vào đây
     void Start() {
         jumpsRemaining = maxJumps;
+        if (AudioManager.Instance != null)
+            runAudioSource.volume = AudioManager.Instance.sfxVolume;
         GameplayManager.Ins.OpenPastMap();
     }
 
